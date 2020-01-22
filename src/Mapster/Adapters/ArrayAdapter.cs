@@ -64,9 +64,9 @@ namespace Mapster.Adapters
             var exp = Expression.Call(method, source, Expression.Lambda(adapt, p1));
 
             //src.Select(item => convert(item)).ToArray()
-            var toList = (from m in typeof(Enumerable).GetMethods()
-                            where m.Name == nameof(Enumerable.ToArray)
-                            select m).First().MakeGenericMethod(destinationElementType);
+            var toList = typeof(Enumerable).GetMethods()
+                .First(m => m.Name == nameof(Enumerable.ToArray))
+                .MakeGenericMethod(destinationElementType);
             exp = Expression.Call(toList, exp);
 
             return exp;

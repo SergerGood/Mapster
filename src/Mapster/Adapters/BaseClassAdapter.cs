@@ -157,7 +157,7 @@ namespace Mapster.Adapters
             return Expression.New(classConverter.ConstructorInfo, arguments);
         }
 
-        protected virtual ClassModel GetConstructorModel(ConstructorInfo ctor, bool breakOnUnmatched)
+        protected static ClassModel GetConstructorModel(ConstructorInfo ctor, bool breakOnUnmatched)
         {
             return new ClassModel
             {

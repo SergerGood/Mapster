@@ -105,9 +105,9 @@ namespace Mapster.Adapters
                     return source;
 
                 //create new enumerable to prevent destination casting back to original type and alter directly
-                var toEnum = (from m in typeof(MapsterHelper).GetMethods()
-                              where m.Name == nameof(MapsterHelper.ToEnumerable)
-                              select m).First().MakeGenericMethod(destinationElementType);
+                var toEnum = typeof(MapsterHelper).GetMethods()
+                    .First(m => m.Name == nameof(MapsterHelper.ToEnumerable))
+                    .MakeGenericMethod(destinationElementType);
                 return Expression.Call(toEnum, source);
             }
 
@@ -117,9 +117,9 @@ namespace Mapster.Adapters
                 exp = source;
             else
             {
-                var cast = (from m in typeof(Enumerable).GetMethods()
-                            where m.Name == nameof(Enumerable.Cast)
-                            select m).First().MakeGenericMethod(sourceElementType);
+                var cast = typeof(Enumerable).GetMethods()
+                    .First(m => m.Name == nameof(Enumerable.Cast))
+                    .MakeGenericMethod(sourceElementType);
                 exp = Expression.Call(cast, source);
             }
 
@@ -133,9 +133,9 @@ namespace Mapster.Adapters
             if (exp.Type != arg.DestinationType)
             {
                 //src.Select(item => convert(item)).ToList()
-                var toList = (from m in typeof(Enumerable).GetMethods()
-                              where m.Name == nameof(Enumerable.ToList)
-                              select m).First().MakeGenericMethod(destinationElementType);
+                var toList = typeof(Enumerable).GetMethods()
+                    .First(m => m.Name == nameof(Enumerable.ToList))
+                    .MakeGenericMethod(destinationElementType);
                 exp = Expression.Call(toList, exp);
             }
             return exp;

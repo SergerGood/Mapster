@@ -378,7 +378,8 @@ namespace Mapster.Adapters
         {
             return CreateAdaptExpression(source, destinationType, arg, null, destination);
         }
-        internal Expression CreateAdaptExpression(Expression source, Type destinationType, CompileArgument arg, MemberMapping? mapping, Expression? destination = null)
+
+        internal static Expression CreateAdaptExpression(Expression source, Type destinationType, CompileArgument arg, MemberMapping? mapping, Expression? destination = null)
         {
             if (source.Type == destinationType &&
                 (arg.Settings.ShallowCopyForSameType == true || arg.MapType == MapType.Projection))
@@ -388,9 +389,8 @@ namespace Mapster.Adapters
             var exp = CreateAdaptExpressionCore(source, destinationType, arg, mapping, destination);
 
             //transform(adapt(source));
-            if (arg.Settings.DestinationTransforms.Transforms.ContainsKey(exp.Type))
+            if (arg.Settings.DestinationTransforms.Transforms.TryGetValue(exp.Type, out LambdaExpression transform))
             {
-                var transform = arg.Settings.DestinationTransforms.Transforms[exp.Type];
                 exp = transform.Apply(arg.MapType, exp);
             }
             return exp.To(destinationType);

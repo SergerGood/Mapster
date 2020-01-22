@@ -422,9 +422,9 @@ namespace Mapster
             }
             else
             {
-                var method = (from m in typeof(TypeAdapterConfig).GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                    where m.Name == nameof(GetMapFunction)
-                    select m).First().MakeGenericMethod(sourceType, destinationType);
+                var method = typeof(TypeAdapterConfig).GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                    .First(m => m.Name == nameof(GetMapFunction))
+                    .MakeGenericMethod(sourceType, destinationType);
                 invoker = Expression.Call(Expression.Constant(this), method);
             }
             return Expression.Call(invoker, "Invoke", null, p);
@@ -435,9 +435,9 @@ namespace Mapster
             if (p2 == null)
                 return CreateMapInvokeExpressionBody(sourceType, destinationType, p1);
 
-            var method = (from m in typeof(TypeAdapterConfig).GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                where m.Name == nameof(GetMapToTargetFunction)
-                select m).First().MakeGenericMethod(sourceType, destinationType);
+            var method = typeof(TypeAdapterConfig).GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                .First(m => m.Name == nameof(GetMapToTargetFunction))
+                .MakeGenericMethod(sourceType, destinationType);
             var invoker = Expression.Call(Expression.Constant(this), method);
             return Expression.Call(invoker, "Invoke", null, p1, p2);
         }
