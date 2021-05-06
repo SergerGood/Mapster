@@ -208,12 +208,12 @@ namespace Mapster
             int score = 35;
             if (type2.GetTypeInfo().IsGenericTypeDefinition)
             {
-                while (type1 != null && type1.GetTypeInfo().IsGenericType && type1.GetGenericTypeDefinition() != type2)
+                while (type1?.GetTypeInfo().IsGenericType == true && type1.GetGenericTypeDefinition() != type2)
                 {
                     score--;
                     type1 = type1.GetTypeInfo().BaseType;
                 }
-                return type1 != null && type1.GetTypeInfo().IsGenericType && type1.GetGenericTypeDefinition() == type2 
+                return type1?.GetTypeInfo().IsGenericType == true && type1.GetGenericTypeDefinition() == type2 
                     ? (int?)score
                     : null;
             }

@@ -17,7 +17,7 @@ namespace Mapster
         private Dictionary<string, object>? _parameters;
         Dictionary<string, object> Parameters => _parameters ??= new Dictionary<string, object>();
         Dictionary<string, object> IAdapterBuilder.Parameters => this.Parameters;
-        bool IAdapterBuilder.HasParameter => _parameters != null && _parameters.Count > 0;
+        bool IAdapterBuilder.HasParameter => _parameters?.Count > 0;
 
         internal TypeAdapterBuilder(TSource source, TypeAdapterConfig config)
         {

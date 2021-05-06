@@ -398,7 +398,7 @@ namespace Mapster.Adapters
 
             try
             {
-                if (mapping != null && mapping.HasSettings())
+                if (mapping?.HasSettings() == true)
                 {
                     if (arg.Context.ExtraParameters.Add(mapping.Source))
                         extraParams.Add(mapping.Source);
